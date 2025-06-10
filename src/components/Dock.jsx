@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Home, Briefcase, Github, Instagram, MessageCircle, User } from 'lucide-react';
+import { Home, Briefcase, Github, Instagram, MessageCircle, User, Twitter } from 'lucide-react';
 
 const icons = [
   { type: 'internal', href: '/', icon: <Home size={20} /> },
@@ -8,8 +8,9 @@ const icons = [
   { type: 'internal', href: '/work', icon: <Briefcase size={20} /> },
   { type: 'divider' },
   { type: 'external', href: 'https://github.com/GhostFreakk', icon: <Github size={20} /> },
-  { type: 'external', href: 'https://instagram.com/ghostfreakk', icon: <Instagram size={20} /> },
-  { type: 'external', href: 'https://discord.com/users/your-discord-id', icon: <MessageCircle size={20} /> },
+  { type: 'external', href: 'https://www.instagram.com/ghostfreakks/', icon: <Instagram size={20} /> },
+  { type: 'external', href: 'https://discord.com/users/1259926188265308372', icon: <MessageCircle size={20} /> },
+  { type: 'external', href: 'https://x.com/Ghostythefreak', icon: <Twitter size={20} /> },
   { type: 'divider' },
   { type: 'internal', href: '/contact', icon: 'Hire Me', isButton: true },
 ];
