@@ -8,6 +8,7 @@ import Contact from './pages/Contact';
 import Dock from './components/Dock';
 import Navbar from './components/Navbar';
 import Admin from './pages/Admin';
+import { Helmet } from 'react-helmet';
 
 const CODE_HASH = 'deb3d256fde0a2aac4ed37d719b0ac62c8380cd79ad4b51b7fabc5190ad5de82';
 function sha256(str) {
@@ -153,6 +154,10 @@ function AppContent() {
 function App() {
   return (
     <Router>
+      <Helmet>
+        <title>Ghost</title>
+        <link rel="icon" type="image/png" href="/logo.png" />
+      </Helmet>
       <AppContent />
     </Router>
   );
