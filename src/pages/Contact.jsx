@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import { useMessage } from '../context/MessageContext';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ const Contact = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const { showMessage } = useMessage();
 
   const validateForm = () => {
     const newErrors = {};
@@ -37,6 +39,7 @@ const Contact = () => {
     e.preventDefault();
     
     if (!validateForm()) {
+      showMessage('Please fix the form errors', 'error');
       return;
     }
 
@@ -54,12 +57,12 @@ const Contact = () => {
 
       if (response.ok) {
         setFormData({ name: '', email: '', message: '' });
-        alert('Message sent successfully!');
+        showMessage('Message sent successfully!', 'success');
       } else {
         throw new Error('Failed to send message');
       }
     } catch (error) {
-      alert('Failed to send message. Please try again later.');
+      showMessage('Failed to send message. Please try again later.', 'error');
     }
   };
 

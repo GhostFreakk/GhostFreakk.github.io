@@ -1,4 +1,7 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from 'react';
+import { useMessage } from '../context/MessageContext';
+import { TextAnimate } from '../components/magicui/text-animate';
 
 const quotes = [
   "Talk is cheap. Show me the code. – Linus Torvalds",
@@ -22,6 +25,7 @@ const getRandomQuote = () => quotes[Math.floor(Math.random() * quotes.length)];
 
 const Home = ({ onReveal, isRevealed }) => {
   const [currentQuote, setCurrentQuote] = useState(getRandomQuote());
+  const { showMessage } = useMessage();
 
   useEffect(() => {
     setCurrentQuote(getRandomQuote());
@@ -30,8 +34,16 @@ const Home = ({ onReveal, isRevealed }) => {
   const handleReveal = () => {
     if (!isRevealed) {
       onReveal();
+      showMessage('Welcome to my portfolio!', 'success');
     }
   };
+
+  // Add a welcome message when the component mounts
+  useEffect(() => {
+    if (isRevealed) {
+      showMessage('Feel free to explore!', 'info', 5000);
+    }
+  }, [isRevealed, showMessage]);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8">
@@ -53,12 +65,21 @@ const Home = ({ onReveal, isRevealed }) => {
             GHOST
           </h1>
           {isRevealed && (
-            <p className="mt-6 text-2xl md:text-3xl text-gray-400 max-w-2xl mx-auto text-center mb-0 dim-quote animate-fade-in">
-              {currentQuote}
-            </p>
+            <div className="mt-6 text-2xl md:text-3xl text-gray-400 max-w-2xl mx-auto text-center mb-0 dim-quote">
+              <TextAnimate animation="slideUp" by="word">
+                {currentQuote}
+              </TextAnimate>
+            </div>
           )}
         </div>
       </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+        className="text-center"
+      >
+      </motion.div>
       <style>{`
         .metallic-gradient-text {
           background: linear-gradient(120deg, #e0e0e0 10%, #b0b0b0 30%, #f5f5f5 50%, #a3a3a3 70%, #e0e0e0 100%);

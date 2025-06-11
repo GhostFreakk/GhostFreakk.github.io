@@ -9,6 +9,7 @@ import Dock from './components/Dock';
 import Navbar from './components/Navbar';
 import Admin from './pages/Admin';
 import { Helmet } from 'react-helmet';
+import { MessageProvider, useMessage } from './context/MessageContext';
 
 const CODE_HASH = 'deb3d256fde0a2aac4ed37d719b0ac62c8380cd79ad4b51b7fabc5190ad5de82';
 function sha256(str) {
@@ -29,6 +30,7 @@ function AppContent() {
   const [code, setCode] = useState('');
   const [codeError, setCodeError] = useState('');
   const [codeLoading, setCodeLoading] = useState(false);
+  const { showMessage } = useMessage();
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -62,15 +64,22 @@ function AppContent() {
     e.preventDefault();
     setCodeError('');
     setCodeLoading(true);
-    const hash = await sha256(code.trim());
-    setCodeLoading(false);
-    if (hash === CODE_HASH) {
-      setShowCodeModal(false);
-      setCode('');
-      setCodeError('');
-      navigate('/admin');
-    } else {
-      setCodeError('Incorrect code.');
+    try {
+      const hash = await sha256(code.trim());
+      setCodeLoading(false);
+      if (hash === CODE_HASH) {
+        setShowCodeModal(false);
+        setCode('');
+        setCodeError('');
+        navigate('/admin');
+        showMessage('Access granted!', 'success');
+      } else {
+        setCodeError('Incorrect code.');
+        showMessage('Invalid access code', 'error');
+      }
+    } catch (error) {
+      setCodeLoading(false);
+      showMessage('An error occurred. Please try again.', 'error');
     }
   };
 
@@ -153,13 +162,15 @@ function AppContent() {
 // Main App component with Router
 function App() {
   return (
-    <Router>
-      <Helmet>
-        <title>Ghost</title>
-        <link rel="icon" type="image/png" href="/logo.png" />
-      </Helmet>
-      <AppContent />
-    </Router>
+    <MessageProvider>
+      <Router>
+        <Helmet>
+          <title>Ghost</title>
+          <link rel="icon" type="image/png" href="/logo.png" />
+        </Helmet>
+        <AppContent />
+      </Router>
+    </MessageProvider>
   );
 }
 
